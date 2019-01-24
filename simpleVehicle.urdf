@@ -1,0 +1,244 @@
+<?xml version="1.0" ?>
+<!-- @file Krang.urdf -->
+<!-- @author Can Erdogan -->
+<!-- @date May 10, 2013 -->
+<!-- @brief This file contains the .urdf definition for Krang. -->
+<!-- NOTE: The center of mass locations are taken from the MassTable by summing up the -->
+<!-- individual part values for the sections (which correspond to nodes here). -->
+<!-- TODO: Set the center of mass locations -->
+<!-- TODO: Set the correct masses. Note that the dae models have the brackets divided in two and -->
+<!-- connected to the middle motor for which we do not have measurements. -->
+<!-- NOTE: The bounding box values are taken by finding the min and max values of the dae files. -->
+
+<robot name="simpleVehicle">
+	
+	<!-- ======================================================================================================== -->
+	<!-- ============================================== Links =================================================== -->
+	<!-- ======================================================================================================== -->
+
+	<link name = "Chassis"> 
+	    <inertial>
+	      <mass value="30.0"/>
+	      <inertia ixx="1.0" ixy="1.0" ixz="1.0" iyy="1.0" iyz="1.0" izz="1.0"/>
+	      <origin xyz="0 0 0"/>
+	    </inertial>
+		<visual> 
+			<geometry> 
+				<mesh filename="CAD/chassis.dae" /> 
+			</geometry>
+		</visual>
+	</link>
+
+	<link name = "FRUpright">
+		<inertial>
+	      <mass value="1.0"/>
+	      <inertia ixx="1.0" ixy="1.0" ixz="1.0" iyy="1.0" iyz="1.0" izz="1.0"/>
+	      <origin xyz="0 0 0"/>
+	    </inertial>
+	</link>
+	<link name = "FLUpright">
+		<inertial>
+	      <mass value="1.0"/>
+	      <inertia ixx="1.0" ixy="1.0" ixz="1.0" iyy="1.0" iyz="1.0" izz="1.0"/>
+	      <origin xyz="0 0 0"/>
+	    </inertial>
+	</link>
+
+
+	<link name = "FRTurn">
+		<inertial>
+	      <mass value="0.1"/>
+	      <inertia ixx="0.1" ixy="0.1" ixz="0.1" iyy="0.1" iyz="0.1" izz="0.1"/>
+	      <origin xyz="0 0 0"/>
+	    </inertial>
+	</link>
+	<link name = "FLTurn">
+		<inertial>
+	      <mass value="0.1"/>
+	      <inertia ixx="0.1" ixy="0.1" ixz="0.1" iyy="0.1" iyz="0.1" izz="0.1"/>
+	      <origin xyz="0 0 0"/>
+	    </inertial>
+	</link>
+
+	<link name = "RRUpright">
+		<inertial>
+	      <mass value="1.0"/>
+	      <inertia ixx="1.0" ixy="1.0" ixz="1.0" iyy="1.0" iyz="1.0" izz="1.0"/>
+	      <origin xyz="0 0 0"/>
+	    </inertial>
+	</link>
+	<link name = "RLUpright">
+		<inertial>
+	      <mass value="1.0"/>
+	      <inertia ixx="1.0" ixy="1.0" ixz="1.0" iyy="1.0" iyz="1.0" izz="1.0"/>
+	      <origin xyz="0 0 0"/>
+	    </inertial>
+	</link>
+
+	<link name = "FRWheel">
+		<inertial>
+	      <mass value="25.0"/>
+	      <inertia ixx="1.45" ixy="0.0" ixz="0.0" iyy="1.45" iyz="0.0" izz="2.58"/>
+	      <origin xyz="0 0 0"/>
+	    </inertial>
+	    <visual> 
+			<geometry> 
+				<mesh filename="CAD/wheel2.dae" /> 
+			</geometry>
+		</visual>
+		<collision> 
+			<geometry> 
+				<cylinder length="0.2" radius="0.4" />
+			 </geometry> 
+			 <origin rpy="1.57 0 0"/>
+		</collision>
+	</link>
+
+
+	<link name = "FLWheel">
+		<inertial>
+	      <mass value="25.0"/>
+	      <inertia ixx="1.45" ixy="0.0" ixz="0.0" iyy="1.45" iyz="0.0" izz="2.58"/>
+	      <origin xyz="0 0 0"/>
+	    </inertial>
+	    <visual> 
+			<geometry> 
+				<mesh filename="CAD/wheel2.dae" /> 
+			</geometry>
+		</visual>
+		<collision> 
+			<geometry> 
+				<cylinder length="0.2" radius="0.4" />
+			 </geometry> 
+			 <origin rpy="1.57 0 0"/>
+		</collision> 
+	</link>
+
+
+	<link name = "RRWheel">
+		<inertial>
+	      <mass value="25.0"/>
+	      <inertia ixx="1.45" ixy="0.0" ixz="0.0" iyy="1.45" iyz="0.0" izz="2.58"/>
+	      <origin xyz="0 0 0"/>
+	    </inertial>
+	    <visual> 
+			<geometry> 
+				<mesh filename="CAD/wheel2.dae" /> 
+			</geometry>
+		</visual>
+		<collision> 
+			<geometry> 
+				<cylinder length="0.2" radius="0.4" />
+			 </geometry> 
+			 <origin rpy="1.57 0 0"/>
+		</collision> 
+	</link>
+
+
+	<link name = "RLWheel">
+		<inertial>
+	      <mass value="25.0"/>
+	      <inertia ixx="1.45" ixy="0.0" ixz="0.0" iyy="1.45" iyz="0.0" izz="2.58"/>
+	      <origin xyz="0 0 0"/>
+	    </inertial>
+	    <visual> 
+			<geometry> 
+				<mesh filename="CAD/wheel2.dae" /> 
+			</geometry>
+		</visual>
+		<collision> 
+			<geometry> 
+				<cylinder length="0.2" radius="0.4" />
+			 </geometry> 
+			 <origin rpy="1.57 0 0"/>
+		</collision> 
+	</link>
+
+	<!-- ======================================================================================================== -->
+	<!-- ============================================ Joints ==================================================== -->
+	<!-- ======================================================================================================== -->
+
+	<joint name="Chassis_FRUpright" type="prismatic"> 
+		<parent link="Chassis" /> <child link="FRUpright" />
+		<origin xyz = "1.90 -1.2 -0.3"/>
+		<axis xyz="0 0 1" /> 
+		<limit effort="1000" lower="-0.2" upper="0.15" velocity="1000" />
+	</joint>
+
+	<joint name="Chassis_FLUpright" type="prismatic"> 
+		<parent link="Chassis" /> <child link="FLUpright" />
+		<origin xyz = "1.90 1.2 -0.3"/>
+		<axis xyz="0 0 1" /> 
+		<limit effort="1000" lower="-0.2" upper="0.15" velocity="1000" />
+	</joint>
+
+	<joint name="Chassis_RRUpright" type="prismatic"> 
+		<parent link="Chassis" /> <child link="RRUpright" />
+		<origin xyz = "-1.7077 -1.2 -0.3"/>
+		<axis xyz="0 0 1" /> 
+		<limit effort="1000" lower="-0.2" upper="0.15" velocity="1000" />
+	</joint>
+
+	<joint name="Chassis_RLUpright" type="prismatic"> 
+		<parent link="Chassis" /> <child link="RLUpright" />
+		<origin xyz = "-1.7077 1.2 -0.3"/>
+		<axis xyz="0 0 1" /> 
+		<limit effort="1000" lower="-0.2" upper="0.15" velocity="1000" />
+	</joint>
+
+
+
+	<joint name="FRUpright_FRTurn" type="revolute">
+		<parent link="FRUpright"/> <child link="FRTurn" />
+		<axis xyz="0 0 1"/>
+		<limit effort="1000" lower="-0.2" upper="0.15" velocity="1000" />
+	</joint>
+
+	<joint name="FLUpright_FLTurn" type="revolute">
+		<parent link="FLUpright"/> <child link="FLTurn" />
+		<axis xyz="0 0 1"/>
+		<limit effort="1000" lower="-0.2" upper="0.15" velocity="1000" />
+	</joint>
+
+
+
+	<joint name="FRTurn_FRWheel" type="revolute"> 
+		<parent link="FRTurn" /> <child link="FRWheel" />
+		<origin rpy="0 0 3.14"/>
+		<axis xyz="0 -1 0" /> 
+		<limit effort="10" lower="-1000" upper="1000" velocity="10" />
+	</joint>
+
+	<joint name="FLTurn_FLWheel" type="revolute"> 
+		<parent link="FLTurn" /> <child link="FLWheel" />
+		<axis xyz="0 1 0" /> 
+		<limit effort="10" lower="-1000" upper="1000" velocity="10" />
+	</joint>
+
+	<joint name="RRUpright_RRWheel" type="revolute"> 
+		<parent link="RRUpright" /> <child link="RRWheel" />
+		<origin rpy="0 0 3.14"/>
+		<axis xyz="0 -1 0" /> 
+		<limit effort="10" lower="-1000" upper="1000" velocity="10" />
+	</joint>
+
+	<joint name="RLUpright_RLWheel" type="revolute"> 
+		<parent link="RLUpright" /> <child link="RLWheel" />
+		<axis xyz="0 1 0" /> 
+		<limit effort="10" lower="-1000" upper="1000" velocity="10" />
+	</joint>
+
+
+<!-- Actual values for Chassis and Wheels, which result in a poor simulation -->
+<!-- <mass value="25.0"/>
+	      <inertia ixx="1.45" ixy="0.0" ixz="0.0" iyy="1.45" iyz="0.0" izz="2.58"/>
+<mass value="2540.0"/>
+	      <inertia ixx="1295.19" ixy="266.23" ixz="0.0" iyy="5701.50" iyz="1.0" izz="4492.40"/> -->
+
+<!-- Values for Chassis and Wheels that work nicely -->
+	 <!--  <mass value="1.0"/>
+	      <inertia ixx="1.0" ixy="1.0" ixz="1.0" iyy="1.0" iyz="1.0" izz="1.0"/>
+	  <mass value="1.0"/>
+	      <inertia ixx="1.0" ixy="1.0" ixz="1.0" iyy="1.0" iyz="1.0" izz="1.0"/> -->
+
+</robot>
