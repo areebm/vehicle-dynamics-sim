@@ -242,12 +242,12 @@ dart::dynamics::SkeletonPtr createVehicle() {
   Eigen::Vector3d COM;
 
   // Load the Skeleton from a file
-  vehicle = loader.parseSkeleton("/home/areeb/dart/01-vehicleDynamics/simpleVehicle.urdf");
+  vehicle = loader.parseSkeleton("/home/areeb/dart/vehicle-dynamics-sim/simpleVehicle.urdf");
   vehicle->setName("vehicle");
 
   // Set the positions and get the resulting COM angle
   // vehicle->setPositions(q);
-  COM = vehicle->getCOM();
+  // COM = vehicle->getCOM();
 
   //Set Damping Coefficients of every wheel
   vehicle->getJoint(0)->setDampingCoefficient(0, 0.5);
