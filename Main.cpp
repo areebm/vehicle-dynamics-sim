@@ -64,12 +64,14 @@ class MyWindow : public dart::gui::SimWindow {
     int mSteps;
 };
 
+// void dart::gui::RenderInterface::setViewport(0,0,200,100);
+
 void MyWindow::recordData() {
-  q_out_file << mWorld->getSkeleton("vehicle")->getJoint("Chassis_FRUpright")->getPosition(0) <<
-    "   " << mWorld->getSkeleton("vehicle")->getJoint("Chassis_FLUpright")->getPosition(0) <<
-    "   " << mWorld->getSkeleton("vehicle")->getJoint("Chassis_RRUpright")->getPosition(0) <<
-    "   " << mWorld->getSkeleton("vehicle")->getJoint("Chassis_RLUpright")->getPosition(0) << endl;
-  t_file << mSteps << endl;
+  // q_out_file << mWorld->getSkeleton("vehicle")->getJoint("Chassis_FRUpright")->getPosition(0) <<
+  //   "   " << mWorld->getSkeleton("vehicle")->getJoint("Chassis_FLUpright")->getPosition(0) <<
+  //   "   " << mWorld->getSkeleton("vehicle")->getJoint("Chassis_RRUpright")->getPosition(0) <<
+  //   "   " << mWorld->getSkeleton("vehicle")->getJoint("Chassis_RLUpright")->getPosition(0) << endl;
+  // t_file << mSteps << endl;
 }
 
 //====================================================================
@@ -86,26 +88,26 @@ void MyWindow::drawWorld() const {
     mRI->popMatrix();
 
     // Draw ellipsoids at COM of Wheels in blue
-    mRI->setPenColor(Eigen::Vector3d(0.1, 0.1, 1));    
-    mRI->pushMatrix();
-    mRI->translate(mWorld->getSkeleton("vehicle")->getBodyNode("FLWheel")->getCOM());
-    mRI->drawEllipsoid(Eigen::Vector3d(mRadius*0.5, mRadius*1.5, mRadius*0.5));
-    mRI->popMatrix();
+    // mRI->setPenColor(Eigen::Vector3d(0.1, 0.1, 1));    
+    // mRI->pushMatrix();
+    // mRI->translate(mWorld->getSkeleton("vehicle")->getBodyNode("FLWheel")->getCOM());
+    // mRI->drawEllipsoid(Eigen::Vector3d(mRadius*0.5, mRadius*1.5, mRadius*0.5));
+    // mRI->popMatrix();
 
-    mRI->pushMatrix();
-    mRI->translate(mWorld->getSkeleton("vehicle")->getBodyNode("FRWheel")->getCOM());
-    mRI->drawEllipsoid(Eigen::Vector3d(mRadius*0.5, mRadius*1.5, mRadius*0.5));
-    mRI->popMatrix();
+    // mRI->pushMatrix();
+    // mRI->translate(mWorld->getSkeleton("vehicle")->getBodyNode("FRWheel")->getCOM());
+    // mRI->drawEllipsoid(Eigen::Vector3d(mRadius*0.5, mRadius*1.5, mRadius*0.5));
+    // mRI->popMatrix();
     
-    mRI->pushMatrix();
-    mRI->translate(mWorld->getSkeleton("vehicle")->getBodyNode("RLWheel")->getCOM());
-    mRI->drawEllipsoid(Eigen::Vector3d(mRadius*0.5, mRadius*1.5, mRadius*0.5));
-    mRI->popMatrix();
+    // mRI->pushMatrix();
+    // mRI->translate(mWorld->getSkeleton("vehicle")->getBodyNode("RLWheel")->getCOM());
+    // mRI->drawEllipsoid(Eigen::Vector3d(mRadius*0.5, mRadius*1.5, mRadius*0.5));
+    // mRI->popMatrix();
     
-    mRI->pushMatrix();
-    mRI->translate(mWorld->getSkeleton("vehicle")->getBodyNode("RRWheel")->getCOM());
-    mRI->drawEllipsoid(Eigen::Vector3d(mRadius*0.5, mRadius*1.5, mRadius*0.5));
-    mRI->popMatrix();
+    // mRI->pushMatrix();
+    // mRI->translate(mWorld->getSkeleton("vehicle")->getBodyNode("RRWheel")->getCOM());
+    // mRI->drawEllipsoid(Eigen::Vector3d(mRadius*0.5, mRadius*1.5, mRadius*0.5));
+    // mRI->popMatrix();
   }
 
   // Draw world
