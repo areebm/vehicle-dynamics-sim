@@ -21,8 +21,8 @@ void StereoCam::update(){
 	mFrame++;
 	// Update positions and orientations here
 
-	cout << "mFrame:" << mFrame << endl;
-	//Save screenshot every N frames
+	// cout << "mFrame:" << mFrame << endl;
+	//Save screenshot every N frames (Suggest N = 100)
 	
 }
 
