@@ -78,7 +78,7 @@ Controller::Controller(dart::dynamics::SkeletonPtr _robot)
   mRobot->getJoint("Chassis_RRUpright")->setDampingCoefficient(0,c);
   mRobot->getJoint("Chassis_RRUpright")->setSpringStiffness(0,k);
 
-  cout << "DOF: " << dof << endl;
+  // cout << "DOF: " << dof << endl;
 
 
   // Default wheel torque and steering angle values
@@ -125,7 +125,7 @@ void Controller::update()
   mRobot->getDof(7)->setPosition(mSteeringAngle);
   mRobot->getDof(10)->setPosition(mSteeringAngle);
 
-  cout << "Torque: " << mTorque << "   Steering Angle: " << mSteeringAngle << endl;
+  // cout << "Torque: " << mTorque << "   Steering Angle: " << mSteeringAngle << endl;
 }
 
 //=========================================================================

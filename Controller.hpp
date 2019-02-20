@@ -29,8 +29,8 @@
  *   POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef EXAMPLES_OPERATIONALSPACECONTROL_CONTROLLER_HPP_
-#define EXAMPLES_OPERATIONALSPACECONTROL_CONTROLLER_HPP_
+#ifndef CONTROLLER_HPP_
+#define CONTROLLER_HPP_
 
 #include <Eigen/Eigen>
 #include <string>
@@ -39,7 +39,6 @@
 #include <iostream>
 
 using namespace dart;
-
 
 /// \brief Operational space controller for 6-dof manipulator
 class Controller {

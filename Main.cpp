@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include "Controller.hpp"
+#include "StereoCam.hpp"
 
 using namespace std;
 using namespace dart::common;
@@ -32,21 +33,25 @@ class MyWindow : public dart::gui::SimWindow {
       for(int i = 0; i < dof-5; i++){
         cout << mVehicle->getJoint(i)->getName() << endl;
       }
-      //Set initial positions
 
       mController = new Controller(mVehicle);
+
+      // TODO: Add camera location and rotation parameters in constructor
+      mStereoCam = new StereoCam();
     }
 
+    // Draw things in the world (e.g. spheres at COMs)
     void drawWorld() const override;
 
+    // Get keyboard input
     void keyboard(unsigned char _key, int _x, int _y) override;
-
-    // SkeletonPtr create3DOF_URDF(SkeletonPtr vehicle, const char * urdfpath);
 
     Eigen::Vector3d getBodyCOM(dart::dynamics::SkeletonPtr robot);
 
+    // Record data to files if called in timestep
     void recordData();
 
+    // Define timestep inclusive of Controller and StereoCam updates
     void timeStepping() override;
 
     ~MyWindow() {}
@@ -59,6 +64,8 @@ class MyWindow : public dart::gui::SimWindow {
     // Controller
     Controller* mController;
 
+    StereoCam* mStereoCam;
+
     double mRadius;
 
     int mSteps;
@@ -67,11 +74,11 @@ class MyWindow : public dart::gui::SimWindow {
 // void dart::gui::RenderInterface::setViewport(0,0,200,100);
 
 void MyWindow::recordData() {
-  // q_out_file << mWorld->getSkeleton("vehicle")->getJoint("Chassis_FRUpright")->getPosition(0) <<
-  //   "   " << mWorld->getSkeleton("vehicle")->getJoint("Chassis_FLUpright")->getPosition(0) <<
-  //   "   " << mWorld->getSkeleton("vehicle")->getJoint("Chassis_RRUpright")->getPosition(0) <<
-  //   "   " << mWorld->getSkeleton("vehicle")->getJoint("Chassis_RLUpright")->getPosition(0) << endl;
-  // t_file << mSteps << endl;
+  q_out_file << mWorld->getSkeleton("vehicle")->getJoint("Chassis_FRUpright")->getPosition(0) <<
+    "   " << mWorld->getSkeleton("vehicle")->getJoint("Chassis_FLUpright")->getPosition(0) <<
+    "   " << mWorld->getSkeleton("vehicle")->getJoint("Chassis_RRUpright")->getPosition(0) <<
+    "   " << mWorld->getSkeleton("vehicle")->getJoint("Chassis_RLUpright")->getPosition(0) << endl;
+  t_file << mSteps << endl;
 }
 
 //====================================================================
@@ -176,9 +183,12 @@ Eigen::Vector3d MyWindow::getBodyCOM(dart::dynamics::SkeletonPtr robot) {
 void MyWindow::timeStepping() {
   mSteps++;
 
-  recordData();
+  // recordData();
   //Currently makes the robot spin in the air
   mController->update();
+
+  //update stereo camera here
+  //mStereoCam->update();
 
   SimWindow::timeStepping();
 }
@@ -202,7 +212,7 @@ SkeletonPtr createFloor() {
 
   // Put the body into position
   Eigen::Isometry3d tf(Eigen::Isometry3d::Identity());
-  tf.translation() = Eigen::Vector3d(0.0, 0.0, -floor_height*40.0);
+  tf.translation() = Eigen::Vector3d(0.0, 0.0, -floor_height*20.0);
   body->getParentJoint()->setTransformFromParentBodyNode(tf);
 
   return floor;
@@ -227,11 +237,13 @@ SkeletonPtr createLedge() {
 
   // Put the body into position
   Eigen::Isometry3d tf(Eigen::Isometry3d::Identity());
-  tf.translation() = Eigen::Vector3d(2.05, 0.0, -ledge_height*37.0);
+  tf.translation() = Eigen::Vector3d(2.05, 0.0, -ledge_height*17.0);
   body->getParentJoint()->setTransformFromParentBodyNode(tf);
 
   return ledge; 
 }
+
+
 
 //====================================================================
 dart::dynamics::SkeletonPtr createVehicle() {
@@ -288,6 +300,11 @@ int main(int argc, char* argv[]) {
   glutInit(&argc, argv);
   window.initWindow(1280,720, "Simple Vehicle Dynamics");
   glutMainLoop();
+
+  //OpenGL to save image to file (See implementation in OpenGlRenderInterface)
+  // "render to an off-screen buffer"
+  // "set up OpenGL to render to a texture, read the resulting texture into..."
+  // "... main memory and save it to a file"
 
   return 0;
 }

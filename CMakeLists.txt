@@ -8,6 +8,7 @@ add_compile_options(-std=c++11)
 
 include_directories(${DART_INCLUDE_DIRS})
 
+set(CMAKE_BUILD_TYPE RelWithDebInfo)
 
 file(GLOB srcs "*.cpp" "*.hpp")
 
