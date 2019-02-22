@@ -7,7 +7,7 @@
 using namespace dart;
 using namespace std;
 
-StereoCam::StereoCam(){
+StereoCam::StereoCam(const dart::simulation::WorldPtr& worldPtr){
 
 	mFrame = 0;
 
@@ -18,6 +18,9 @@ StereoCam::StereoCam(){
 StereoCam::~StereoCam(){}
 
 void StereoCam::update(){
+
+	// Make sure pointer is not null
+	assert(worldPtr);
 	mFrame++;
 	// Update positions and orientations here
 

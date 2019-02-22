@@ -6,6 +6,31 @@ using namespace dart;
 ofstream q_out_file("../data/q_out.txt");
 ofstream t_file("../data/time.txt");
 
+
+
+MyWindow::MyWindow(const dart::simulation::WorldPtr& world) {
+      
+      // Attach the world passed in the input argument to the window
+      setWorld(world);
+      // Get vehicle skeleton from world to pass to Controller
+
+      mVehicle = world->getSkeleton("vehicle");
+
+      mRadius = 0.2;      
+
+      int dof = mVehicle->getNumDofs();
+
+      for(int i = 0; i < dof-5; i++){
+        cout << mVehicle->getJoint(i)->getName() << endl;
+      }
+
+      mController = new Controller(mVehicle);
+
+      // TODO: Add camera location and rotation parameters in constructor
+      mStereoCam = new StereoCam(world);
+}
+
+
 void MyWindow::recordData() {
   q_out_file << mWorld->getSkeleton("vehicle")->getJoint("Chassis_FRUpright")->getPosition(0) <<
     "   " << mWorld->getSkeleton("vehicle")->getJoint("Chassis_FLUpright")->getPosition(0) <<

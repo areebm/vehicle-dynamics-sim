@@ -24,7 +24,7 @@ class StereoCam : public dart::gui::GlutWindow { //Might need to extend SimWindo
 	public:
 		// Constructor
 		// TODO: Take two points as camera location targets
-		StereoCam();
+		StereoCam(const dart::simulation::WorldPtr& worldPtr);
 
 		// Desctructor
 		virtual ~StereoCam();

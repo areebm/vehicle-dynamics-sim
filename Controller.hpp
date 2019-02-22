@@ -44,7 +44,7 @@ using namespace dart;
 class Controller {
 public:
   /// \brief Constructor
-  Controller( dart::dynamics::SkeletonPtr _robot);
+  Controller(dart::dynamics::SkeletonPtr _robot);
 
   /// \brief Destructor
   virtual ~Controller();
