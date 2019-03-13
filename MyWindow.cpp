@@ -6,17 +6,17 @@ using namespace dart;
 ofstream q_out_file("../data/q_out.txt");
 ofstream t_file("../data/time.txt");
 
-
-
 MyWindow::MyWindow(const dart::simulation::WorldPtr& world) {
       
       // Attach the world passed in the input argument to the window
+      // World is a class and SimWindow is a class. SimWindow(dart::gui::SimWindow) has method
+      // setWorld, taking type World (dart::simulation::World).
       setWorld(world);
       // Get vehicle skeleton from world to pass to Controller
 
       mVehicle = world->getSkeleton("vehicle");
 
-      mRadius = 0.2;      
+      mRadius = 0.2;    
 
       int dof = mVehicle->getNumDofs();
 
@@ -25,11 +25,9 @@ MyWindow::MyWindow(const dart::simulation::WorldPtr& world) {
       }
 
       mController = new Controller(mVehicle);
-
       // TODO: Add camera location and rotation parameters in constructor
-      mStereoCam = new StereoCam(world);
+      // mStereoCam = new StereoCam(world);
 }
-
 
 void MyWindow::recordData() {
   q_out_file << mWorld->getSkeleton("vehicle")->getJoint("Chassis_FRUpright")->getPosition(0) <<
@@ -77,6 +75,44 @@ void MyWindow::drawWorld() const {
 
   // Draw world
   SimWindow::drawWorld();
+}
+
+// Reference code. Does not work but I decided to leave it here in this random function. 
+void MyWindow::splitWindows(){
+    initGL();
+    glViewport(0,0, 1280/2, 720/2);
+    glLoadIdentity();
+    gluLookAt(5.0f, 5.0f, 5.0f,
+              0.0f, 0.0f, 0.0f,
+              0.0f, 0.0f, 1.0f);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-2.0 * (GLfloat) 1280 / (GLfloat) 720, 2.0 * (GLfloat) 1280/ (GLfloat) 720, 
+      -2.0, 2.0, 
+      -10.0, 100.0);
+
+    glMatrixMode(GL_MODELVIEW);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    // draw();
+    
+
+    glViewport(0,720/2, 1280/2, 720/2);
+    glLoadIdentity();
+    gluLookAt(5.0f, 5.0f, 5.0f,
+              0.0f, 0.0f, 0.0f,
+              0.0f, 0.0f, 1.0f);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-2.0 * (GLfloat) 1280 / (GLfloat) 720, 2.0 * (GLfloat) 1280/ (GLfloat) 720, 
+      -2.0, 2.0, 
+      -10.0, 100.0);
+
+    glMatrixMode(GL_MODELVIEW);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    // initGL();
+    // draw();
 }
 
 //====================================================================
@@ -137,15 +173,38 @@ Eigen::Vector3d MyWindow::getBodyCOM(dart::dynamics::SkeletonPtr robot) {
   return (fullMass*robot->getCOM() - wheelMass*robot->getBodyNode("LWheel")->getCOM() - wheelMass*robot->getBodyNode("RWheel")->getCOM())/(fullMass - 2*wheelMass);
 }
 
+void MyWindow::ScreenCapViewport(){
+ glViewport(0,0,1280,720); //lower left corner, width, height) 
+ // glMatrixMode(GL_PROJECTION);
+ glLoadIdentity();
+ // gluPerspective(45, 1280/720, 0.1, 10); // (mPersp, width/height, near clip, far clip)
+ // gluLookAt(0,1,0,0,0,-1,0,1,0)
+ gluLookAt(5.0f, 5.0f, 5.0f,
+          0.0f, 0.0f, 0.0f,
+          0.0f, 0.0f, 1.0f);
+ glMatrixMode(GL_MODELVIEW);
+ glLoadIdentity();
+ // initGL();
+
+ //glScale
+ //glTranslate
+ // initLights();
+ // draw();
+ screenshot();
+}
+
 //====================================================================
 void MyWindow::timeStepping() {
   mSteps++;
 
-  // recordData();
+  // RecordData();
   mController->update();
+  // Update stereo camera here
+  // mStereoCam->update();
 
-  //update stereo camera here
-  mStereoCam->update();
-
+  // Try whatever
+  // ScreenCapViewport();
+  // glutPostRedisplay();
+  
   SimWindow::timeStepping();
 }

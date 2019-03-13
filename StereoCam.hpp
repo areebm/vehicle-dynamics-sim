@@ -19,7 +19,7 @@ using namespace dart;
 // using namespace dart::common;
 // using namespace dart::math;
 
-class StereoCam : public dart::gui::GlutWindow { //Might need to extend SimWindow <- Win3D <- GlutWindow
+class StereoCam : public dart::gui::SimWindow { //Might need to extend SimWindow <- Win3D <- GlutWindow
 	
 	public:
 		// Constructor
@@ -34,7 +34,6 @@ class StereoCam : public dart::gui::GlutWindow { //Might need to extend SimWindo
 
 		/// \brief Keyboard control
   		void keyboard(unsigned char _key, int _x, int _y);
-
 
   		// These are pure virtual functions inherited from GlutWindow
   		// Pure virtual methods must be implemented

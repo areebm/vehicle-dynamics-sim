@@ -29,6 +29,10 @@ class MyWindow : public dart::gui::SimWindow {
     // Define timestep inclusive of Controller and StereoCam updates
     void timeStepping() override;
 
+    void ScreenCapViewport();
+
+    void splitWindows();
+
     ~MyWindow() {}
 
   protected:

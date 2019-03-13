@@ -1,17 +1,11 @@
 <?xml version="1.0" ?>
-<!-- @file Krang.urdf -->
-<!-- @author Can Erdogan -->
-<!-- @date May 10, 2013 -->
-<!-- @brief This file contains the .urdf definition for Krang. -->
-<!-- NOTE: The center of mass locations are taken from the MassTable by summing up the -->
-<!-- individual part values for the sections (which correspond to nodes here). -->
-<!-- TODO: Set the center of mass locations -->
-<!-- TODO: Set the correct masses. Note that the dae models have the brackets divided in two and -->
-<!-- connected to the middle motor for which we do not have measurements. -->
-<!-- NOTE: The bounding box values are taken by finding the min and max values of the dae files. -->
+<!-- @file simpleVehicle.urdf -->
+<!-- @author Areeb Mehmood -->
+<!-- @brief This file contains the .urdf definition for a simple vehicle with chassis and wheels. -->
+<!-- TODO: Set the correct masses. -->
 
 <robot name="simpleVehicle">
-	
+
 	<!-- ======================================================================================================== -->
 	<!-- ============================================== Links =================================================== -->
 	<!-- ======================================================================================================== -->
@@ -28,6 +22,7 @@
 			</geometry>
 		</visual>
 	</link>
+
 
 	<link name = "FRUpright">
 		<inertial>
@@ -229,7 +224,7 @@
 	</joint>
 
 
-<!-- Actual values for Chassis and Wheels, which result in a poor simulation -->
+<!-- Actual values for Chassis and Wheels, which result in a poor simulation for now-->
 <!-- <mass value="25.0"/>
 	      <inertia ixx="1.45" ixy="0.0" ixz="0.0" iyy="1.45" iyz="0.0" izz="2.58"/>
 <mass value="2540.0"/>
