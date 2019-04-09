@@ -75,7 +75,6 @@ void Controller::update()
   // mRobot->getDof(9)->setForce(mTorque);
   // mRobot->getDof(12)->setForce(mTorque);
 
-
   // Limit steering angle to +/- 45 degrees
   if(mSteeringAngle > 0.6){
     mSteeringAngle = 0.6;

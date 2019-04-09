@@ -3,8 +3,13 @@
 using namespace std;
 using namespace dart;
 
+dart::dynamics::BodyNode* chassisNode;
+Eigen::Isometry3d chassisNodeTF;
+Eigen::Matrix3d rot;
+
 ofstream q_out_file("../data/q_out.txt");
 ofstream t_file("../data/time.txt");
+ofstream rot_file("../data/rot.txt");
 
 MyWindow::MyWindow(const dart::simulation::WorldPtr& world) {
       
@@ -24,6 +29,8 @@ MyWindow::MyWindow(const dart::simulation::WorldPtr& world) {
         cout << mVehicle->getJoint(i)->getName() << endl;
       }
 
+      chassisNode = mVehicle->getBodyNode(0); // Chassis
+
       mController = new Controller(mVehicle);
       // TODO: Add camera location and rotation parameters in constructor
       // mStereoCam = new StereoCam(world);
@@ -35,6 +42,10 @@ void MyWindow::recordData() {
     "   " << mWorld->getSkeleton("vehicle")->getJoint("Chassis_RRUpright")->getPosition(0) <<
     "   " << mWorld->getSkeleton("vehicle")->getJoint("Chassis_RLUpright")->getPosition(0) << endl;
   t_file << mSteps << endl;
+
+  chassisNodeTF = chassisNode->getWorldTransform();
+  rot = chassisNodeTF.linear();
+  rot_file << rot(0) << " " << rot(1) << " " << rot(2) << " " << rot(3) << " " << rot(4) << " " << rot(5) << " " << rot(6) << " " << rot(7) << " " << rot(8) << endl;
 }
 
 //====================================================================
@@ -197,12 +208,12 @@ void MyWindow::ScreenCapViewport(){
 void MyWindow::timeStepping() {
   mSteps++;
 
-  // RecordData();
+  recordData();
   mController->update();
   // Update stereo camera here
   // mStereoCam->update();
 
-  // Try whatever
+  // Try capturing viewports
   // ScreenCapViewport();
   // glutPostRedisplay();
   
