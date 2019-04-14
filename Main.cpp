@@ -82,6 +82,21 @@ dart::dynamics::SkeletonPtr createVehicle() {
   vehicle->getJoint(2)->setDampingCoefficient(0, 0.5);
   vehicle->getJoint(3)->setDampingCoefficient(0, 0.5);
 
+  cout << "BODY NODES: " << endl;
+  int numBodNodes = vehicle->getNumBodyNodes();
+  for (int ls = 0; ls < numBodNodes; ls++){
+    cout << ls << ": " << vehicle->getBodyNode(ls)->getName() << endl;
+  }
+
+  Eigen::Matrix3d chassisRot;
+  Eigen::Vector3d chassisTrans;
+
+  chassisRot = vehicle->getBodyNode(0)->getTransform().rotation();
+  chassisTrans = vehicle->getJoint("Chassis_FLUpright")->getTransformFromParentBodyNode().translation();
+  cout << "[ " << chassisRot(0,0) << " " << chassisRot(0,1) << " " << chassisRot(0,2) << " ]" << endl
+       << "[ " << chassisRot(1,0) << " " << chassisRot(1,1) << " " << chassisRot(1,2) << " ]" << endl
+       << "[ " << chassisRot(2,0) << " " << chassisRot(2,1) << " " << chassisRot(2,2) << " ]" << endl;
+  cout << "[ " << chassisTrans(0) << " " << chassisTrans(1) << " " << chassisTrans(2) << " ]" << endl;
   return vehicle;
 }
 

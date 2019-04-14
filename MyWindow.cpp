@@ -4,8 +4,10 @@ using namespace std;
 using namespace dart;
 
 dart::dynamics::BodyNode* chassisNode;
-Eigen::Isometry3d chassisNodeTF;
-Eigen::Matrix3d rot;
+dart::dynamics::BodyNode* FRWheelNode;
+
+Eigen::Matrix3d chassisRot;
+Eigen::Vector3d chassisTrans;
 
 ofstream q_out_file("../data/q_out.txt");
 ofstream t_file("../data/time.txt");
@@ -30,6 +32,7 @@ MyWindow::MyWindow(const dart::simulation::WorldPtr& world) {
       }
 
       chassisNode = mVehicle->getBodyNode(0); // Chassis
+      FRWheelNode = mVehicle->getBodyNode(3); // FRWheel
 
       mController = new Controller(mVehicle);
       // TODO: Add camera location and rotation parameters in constructor
@@ -42,10 +45,6 @@ void MyWindow::recordData() {
     "   " << mWorld->getSkeleton("vehicle")->getJoint("Chassis_RRUpright")->getPosition(0) <<
     "   " << mWorld->getSkeleton("vehicle")->getJoint("Chassis_RLUpright")->getPosition(0) << endl;
   t_file << mSteps << endl;
-
-  chassisNodeTF = chassisNode->getWorldTransform();
-  rot = chassisNodeTF.linear();
-  rot_file << rot(0) << " " << rot(1) << " " << rot(2) << " " << rot(3) << " " << rot(4) << " " << rot(5) << " " << rot(6) << " " << rot(7) << " " << rot(8) << endl;
 }
 
 //====================================================================
@@ -88,44 +87,6 @@ void MyWindow::drawWorld() const {
   SimWindow::drawWorld();
 }
 
-// Reference code. Does not work but I decided to leave it here in this random function. 
-void MyWindow::splitWindows(){
-    initGL();
-    glViewport(0,0, 1280/2, 720/2);
-    glLoadIdentity();
-    gluLookAt(5.0f, 5.0f, 5.0f,
-              0.0f, 0.0f, 0.0f,
-              0.0f, 0.0f, 1.0f);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(-2.0 * (GLfloat) 1280 / (GLfloat) 720, 2.0 * (GLfloat) 1280/ (GLfloat) 720, 
-      -2.0, 2.0, 
-      -10.0, 100.0);
-
-    glMatrixMode(GL_MODELVIEW);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    // draw();
-    
-
-    glViewport(0,720/2, 1280/2, 720/2);
-    glLoadIdentity();
-    gluLookAt(5.0f, 5.0f, 5.0f,
-              0.0f, 0.0f, 0.0f,
-              0.0f, 0.0f, 1.0f);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(-2.0 * (GLfloat) 1280 / (GLfloat) 720, 2.0 * (GLfloat) 1280/ (GLfloat) 720, 
-      -2.0, 2.0, 
-      -10.0, 100.0);
-
-    glMatrixMode(GL_MODELVIEW);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    // initGL();
-    // draw();
-}
-
 //====================================================================
 void MyWindow::keyboard(unsigned char _key, int _x, int _y) {
   double incremental = 0.01;
@@ -162,7 +123,7 @@ void MyWindow::keyboard(unsigned char _key, int _x, int _y) {
       mController->mTorque = 0;
 
       // Send Steering Angle to zero. 
-      // TODO: Replace with PID controller in the future with thetaRef = 0
+      // TODO: Replace with PID controller
       if(mController->mSteeringAngle > 0){
         mController->mSteeringAngle -= 0.1;
       }
@@ -204,18 +165,70 @@ void MyWindow::ScreenCapViewport(){
  screenshot();
 }
 
+// Reference code. Does not work but I decided to leave it here in this random function. 
+void MyWindow::splitWindows(){
+    initGL();
+    glViewport(0,0, 1280/2, 720/2);
+    glLoadIdentity();
+    gluLookAt(5.0f, 5.0f, 5.0f,
+              0.0f, 0.0f, 0.0f,
+              0.0f, 0.0f, 1.0f);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-2.0 * (GLfloat) 1280 / (GLfloat) 720, 2.0 * (GLfloat) 1280/ (GLfloat) 720, 
+      -2.0, 2.0, 
+      -10.0, 100.0);
+
+    glMatrixMode(GL_MODELVIEW);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    // draw();
+    
+
+    glViewport(0,720/2, 1280/2, 720/2);
+    glLoadIdentity();
+    gluLookAt(5.0f, 5.0f, 5.0f,
+              0.0f, 0.0f, 0.0f,
+              0.0f, 0.0f, 1.0f);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-2.0 * (GLfloat) 1280 / (GLfloat) 720, 2.0 * (GLfloat) 1280/ (GLfloat) 720, 
+      -2.0, 2.0, 
+      -10.0, 100.0);
+
+    glMatrixMode(GL_MODELVIEW);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    // initGL();
+    // draw();
+}
+
 //====================================================================
 void MyWindow::timeStepping() {
-  mSteps++;
+  // recordData();
 
-  recordData();
-  mController->update();
   // Update stereo camera here
   // mStereoCam->update();
 
+  // Output translation of chassis
+  // chassisTrans = chassisNode->getTransform().translation();
+  chassisTrans = FRWheelNode->getTransform(chassisNode).translation();
+  cout << endl;
+  cout << "[ " << chassisTrans(0) << " " << chassisTrans(1) << " " << chassisTrans(2) << " ]" << endl;
+  
+
+  chassisRot = FRWheelNode->getTransform(chassisNode).rotation();
+  cout << "[ " << chassisRot(0,0) << " " << chassisRot(0,1) << " " << chassisRot(0,2) << " ]" << endl
+       << "[ " << chassisRot(1,0) << " " << chassisRot(1,1) << " " << chassisRot(1,2) << " ]" << endl
+       << "[ " << chassisRot(2,0) << " " << chassisRot(2,1) << " " << chassisRot(2,2) << " ]" << endl;
+  
   // Try capturing viewports
   // ScreenCapViewport();
   // glutPostRedisplay();
+
+  mSteps++;
+
+  mController->update();
   
   SimWindow::timeStepping();
 }
