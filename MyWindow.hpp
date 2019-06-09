@@ -8,7 +8,6 @@
 #include <fstream>
 
 #include "Controller.hpp"
-#include "StereoCam.hpp"
 
 class MyWindow : public dart::gui::SimWindow {
 
@@ -29,10 +28,6 @@ class MyWindow : public dart::gui::SimWindow {
     // Define timestep inclusive of Controller and StereoCam updates
     void timeStepping() override;
 
-    void ScreenCapViewport();
-
-    void splitWindows();
-
     ~MyWindow() {}
 
   protected:
@@ -42,8 +37,6 @@ class MyWindow : public dart::gui::SimWindow {
 
     // Controller
     Controller* mController;
-
-    StereoCam* mStereoCam;
 
     double mRadius;
 

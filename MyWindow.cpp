@@ -9,6 +9,8 @@ dart::dynamics::BodyNode* FRWheelNode;
 Eigen::Matrix3d chassisRot;
 Eigen::Vector3d chassisTrans;
 
+Eigen::Isometry3d testIso;
+
 ofstream q_out_file("../data/q_out.txt");
 ofstream t_file("../data/time.txt");
 ofstream rot_file("../data/rot.txt");
@@ -35,8 +37,6 @@ MyWindow::MyWindow(const dart::simulation::WorldPtr& world) {
       FRWheelNode = mVehicle->getBodyNode(3); // FRWheel
 
       mController = new Controller(mVehicle);
-      // TODO: Add camera location and rotation parameters in constructor
-      // mStereoCam = new StereoCam(world);
 }
 
 void MyWindow::recordData() {
@@ -145,70 +145,10 @@ Eigen::Vector3d MyWindow::getBodyCOM(dart::dynamics::SkeletonPtr robot) {
   return (fullMass*robot->getCOM() - wheelMass*robot->getBodyNode("LWheel")->getCOM() - wheelMass*robot->getBodyNode("RWheel")->getCOM())/(fullMass - 2*wheelMass);
 }
 
-void MyWindow::ScreenCapViewport(){
- glViewport(0,0,1280,720); //lower left corner, width, height) 
- // glMatrixMode(GL_PROJECTION);
- glLoadIdentity();
- // gluPerspective(45, 1280/720, 0.1, 10); // (mPersp, width/height, near clip, far clip)
- // gluLookAt(0,1,0,0,0,-1,0,1,0)
- gluLookAt(5.0f, 5.0f, 5.0f,
-          0.0f, 0.0f, 0.0f,
-          0.0f, 0.0f, 1.0f);
- glMatrixMode(GL_MODELVIEW);
- glLoadIdentity();
- // initGL();
-
- //glScale
- //glTranslate
- // initLights();
- // draw();
- screenshot();
-}
-
-// Reference code. Does not work but I decided to leave it here in this random function. 
-void MyWindow::splitWindows(){
-    initGL();
-    glViewport(0,0, 1280/2, 720/2);
-    glLoadIdentity();
-    gluLookAt(5.0f, 5.0f, 5.0f,
-              0.0f, 0.0f, 0.0f,
-              0.0f, 0.0f, 1.0f);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(-2.0 * (GLfloat) 1280 / (GLfloat) 720, 2.0 * (GLfloat) 1280/ (GLfloat) 720, 
-      -2.0, 2.0, 
-      -10.0, 100.0);
-
-    glMatrixMode(GL_MODELVIEW);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    // draw();
-    
-
-    glViewport(0,720/2, 1280/2, 720/2);
-    glLoadIdentity();
-    gluLookAt(5.0f, 5.0f, 5.0f,
-              0.0f, 0.0f, 0.0f,
-              0.0f, 0.0f, 1.0f);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(-2.0 * (GLfloat) 1280 / (GLfloat) 720, 2.0 * (GLfloat) 1280/ (GLfloat) 720, 
-      -2.0, 2.0, 
-      -10.0, 100.0);
-
-    glMatrixMode(GL_MODELVIEW);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    // initGL();
-    // draw();
-}
 
 //====================================================================
 void MyWindow::timeStepping() {
   // recordData();
-
-  // Update stereo camera here
-  // mStereoCam->update();
 
   // Output translation of chassis
   // chassisTrans = chassisNode->getTransform().translation();
@@ -216,15 +156,15 @@ void MyWindow::timeStepping() {
   cout << endl;
   cout << "[ " << chassisTrans(0) << " " << chassisTrans(1) << " " << chassisTrans(2) << " ]" << endl;
   
-
+  testIso = FRWheelNode->getTransform();
+  cout << "[ " << testIso(0,0) << " " << testIso(0,1) << " " << testIso(0,2) << " ]" << endl
+       << "[ " << testIso(1,0) << " " << testIso(1,1) << " " << testIso(1,2) << " ]" << endl
+       << "[ " << testIso(2,0) << " " << testIso(2,1) << " " << testIso(2,2) << " ]" << endl << endl;
+  
   chassisRot = FRWheelNode->getTransform(chassisNode).rotation();
   cout << "[ " << chassisRot(0,0) << " " << chassisRot(0,1) << " " << chassisRot(0,2) << " ]" << endl
        << "[ " << chassisRot(1,0) << " " << chassisRot(1,1) << " " << chassisRot(1,2) << " ]" << endl
        << "[ " << chassisRot(2,0) << " " << chassisRot(2,1) << " " << chassisRot(2,2) << " ]" << endl;
-  
-  // Try capturing viewports
-  // ScreenCapViewport();
-  // glutPostRedisplay();
 
   mSteps++;
 
