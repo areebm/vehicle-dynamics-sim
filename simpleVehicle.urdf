@@ -87,6 +87,15 @@
 			 </geometry> 
 			 <origin rpy="1.57 0 0"/>
 		</collision>
+		<soft_shape>
+	      <total_mass>4.66</total_mass>
+	      <geometry>
+	        <mesh filename="CAD/wheel2.dae"/>
+	      </geometry>
+	      <kv>500.0</kv>
+	      <ke>0.0</ke>
+	      <damp>5.0</damp>
+		</soft_shape>
 	</link>
 
 
@@ -107,6 +116,15 @@
 			 </geometry> 
 			 <origin rpy="1.57 0 0"/>
 		</collision> 
+		<soft_shape>
+	      <total_mass>4.66</total_mass>
+	      <geometry>
+	        <mesh filename="CAD/wheel2.dae"/>
+	      </geometry>
+	      <kv>500.0</kv>
+	      <ke>0.0</ke>
+	      <damp>5.0</damp>
+		</soft_shape>
 	</link>
 
 
@@ -126,7 +144,16 @@
 				<cylinder length="0.2" radius="0.4" />
 			 </geometry> 
 			 <origin rpy="1.57 0 0"/>
-		</collision> 
+		</collision>
+		<soft_shape>
+	      <total_mass>4.66</total_mass>
+	      <geometry>
+	        <mesh filename="CAD/wheel2.dae"/>
+	      </geometry>
+	      <kv>500.0</kv>
+	      <ke>0.0</ke>
+	      <damp>5.0</damp>
+		</soft_shape>
 	</link>
 
 
@@ -147,6 +174,15 @@
 			 </geometry> 
 			 <origin rpy="1.57 0 0"/>
 		</collision> 
+		<soft_shape>
+	      <total_mass>4.66</total_mass>
+	      <geometry>
+	        <mesh filename="CAD/wheel2.dae"/>
+	      </geometry>
+	      <kv>500.0</kv>
+	      <ke>0.0</ke>
+	      <damp>5.0</damp>
+		</soft_shape>
 	</link>
 
 	<!-- ======================================================================================================== -->
