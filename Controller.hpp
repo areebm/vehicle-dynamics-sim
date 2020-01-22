@@ -32,7 +32,6 @@ public:
   dart::dynamics::SkeletonPtr mRobot;
 
   /// \brief Control forces
-  // Eigen::VectorXd<double, 4> mForces;
   Eigen::VectorXd mForces;
 
   size_t mSteps;

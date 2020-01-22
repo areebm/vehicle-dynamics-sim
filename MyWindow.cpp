@@ -117,21 +117,6 @@ void MyWindow::keyboard(unsigned char _key, int _x, int _y) {
       // Turn Right
       mController->mSteeringAngle -= 0.0135;
       break;
-
-    default:
-      // Default keyboard control
-      mController->mTorque = 0;
-
-      // Send Steering Angle to zero. 
-      // TODO: Replace with PID controller
-      if(mController->mSteeringAngle > 0){
-        mController->mSteeringAngle -= 0.1;
-      }
-      else if(mController->mSteeringAngle < 0){
-        mController->mSteeringAngle += 0.1;
-      }
-      SimWindow::keyboard(_key, _x, _y);
-      break;
   }
 
   // Keyboard control for Controller
@@ -152,7 +137,7 @@ void MyWindow::timeStepping() {
 
   // Output translation of chassis
   // chassisTrans = chassisNode->getTransform().translation();
-  chassisTrans = FRWheelNode->getTransform(chassisNode).translation();
+  /*chassisTrans = FRWheelNode->getTransform(chassisNode).translation();
   cout << endl;
   cout << "[ " << chassisTrans(0) << " " << chassisTrans(1) << " " << chassisTrans(2) << " ]" << endl;
   
@@ -164,7 +149,7 @@ void MyWindow::timeStepping() {
   chassisRot = FRWheelNode->getTransform(chassisNode).rotation();
   cout << "[ " << chassisRot(0,0) << " " << chassisRot(0,1) << " " << chassisRot(0,2) << " ]" << endl
        << "[ " << chassisRot(1,0) << " " << chassisRot(1,1) << " " << chassisRot(1,2) << " ]" << endl
-       << "[ " << chassisRot(2,0) << " " << chassisRot(2,1) << " " << chassisRot(2,2) << " ]" << endl;
+       << "[ " << chassisRot(2,0) << " " << chassisRot(2,1) << " " << chassisRot(2,2) << " ]" << endl;*/
 
   mSteps++;
 

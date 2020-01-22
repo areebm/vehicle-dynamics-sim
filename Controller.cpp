@@ -2,6 +2,8 @@
 using namespace dart;
 using namespace std;
 
+#define STEER_LIM  0.6
+
 //==========================================================================
 Controller::Controller(dart::dynamics::SkeletonPtr _robot)
   :mRobot(_robot)
@@ -47,9 +49,6 @@ Controller::Controller(dart::dynamics::SkeletonPtr _robot)
   mRobot->getJoint("Chassis_RRUpright")->setDampingCoefficient(0,c);
   mRobot->getJoint("Chassis_RRUpright")->setSpringStiffness(0,k);
 
-  // cout << "DOF: " << dof << endl;
-
-
   // Default wheel torque and steering angle values
   mTorque = 0;
   mSteeringAngle = 0;
@@ -61,39 +60,35 @@ Controller::~Controller() {}
 //=========================================================================
 void Controller::update()
 {
-  // increase the step counter
+  // Increase the step counter
   mSteps++;
 
-  // mForces(0) = torq;
-  // mForces(1) = torq;
-  // mForces(2) = torq;
-  // mForces(3) = torq;
+  // Set force vector
+  mForces(0) = mTorque;
+  mForces(1) = mTorque;
+  mForces(2) = mTorque/2;
+  mForces(3) = mTorque/2;
 
-  // const vector<size_t> index{2, 4, 6, 8};
+  // Define subset of generalized coordinates for force to be applied
+  const vector<size_t> index{8, 11, 13, 15};
 
-  // mRobot->setForces(index, mForces);
-  // mRobot->getDof(9)->setForce(mTorque);
-  // mRobot->getDof(12)->setForce(mTorque);
+  // Apply forces
+  mRobot->setForces(index, mForces);
 
-  // Limit steering angle to +/- 45 degrees
-  if(mSteeringAngle > 0.6){
-    mSteeringAngle = 0.6;
-  }
-  else if (mSteeringAngle < -0.6){
-    mSteeringAngle = -0.6;
-  }
-
-  // Set Torque on rear wheel joints of car
-  mRobot->getDof(13)->setForce(mTorque);
-  mRobot->getDof(15)->setForce(mTorque);
-  mRobot->getDof(8)->setForce(mTorque/2);
-  mRobot->getDof(11)->setForce(mTorque/2);
-
-  // Set Steering Angle in the vehicle turn joints
+  // Set steering angle in the vehicle turn joints
   mRobot->getDof(7)->setPosition(mSteeringAngle);
   mRobot->getDof(10)->setPosition(mSteeringAngle);
 
-  // cout << "Torque: " << mTorque << "   Steering Angle: " << mSteeringAngle << endl;
+  // Limit steering angle
+  if(mSteeringAngle > STEER_LIM){
+    mSteeringAngle = STEER_LIM;
+  }
+  else if (mSteeringAngle < -STEER_LIM){
+    mSteeringAngle = -STEER_LIM;
+  }
+
+  // Simulate castor force at front wheels
+  mSteeringAngle -= mRobot->getDof(7)->getPosition()*0.0005;
 }
 
 //=========================================================================
